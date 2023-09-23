@@ -79,3 +79,19 @@ Có một vài lý do để RT được sử dụng như:
 - Bạn cần phân biệt được máy chủ ủy quyền và máy chủ tài nguyên. Máy chủ ủy quyền có nhiệm vụ cung cấp mã RT và kí mã AT để đại diện cho người dùng. Máy chủ tài nguyên nhận mã đã kí từ máy chủ ủy quyền để có quyền như người dùng đang thao tác với dữ liệu của họ trên hệ thống như thông tin tài khoản, dữ liệu… Máy chủ ủy quyền và máy chủ tài nguyên có thể là một. RT thường được lưu trữ ở máy chủ ủy quyền phục vụ cho mục đích cấp mã AT mới. Còn mã AT được dùng ở máy chủ tài nguyên, dùng để định danh một người dùng.
 - Bạn không cần phải lưu lại nhiều AT, nếu muốn chấm dứt phiên chỉ đơn giản là vô hiệu hóa mã RT trên máy chủ ủy quyền.
 Sau khi hiểu được những lý do trên thì việc sinh ra RT giúp giải quyết được một vài hạn chế khi chỉ sử dụng mỗi AT. Nhưng như vậy nếu mã AT hoặc RT bị lộ thì rủi ro sẽ rất cao sao? Và các lưu trữ chúng như thế nào thì mình xin viết tiếp ở phần sau.
+
+## Quy tắc bảo mật của access token và refresh token
+
+Để đảm bảo bảo mật của access token và refresh token, cần tuân thủ các quy tắc sau:
+
+- Access token phải được mã hóa: Access token phải được mã hóa để ngăn chặn kẻ tấn công đọc được nội dung của nó. Có nhiều phương pháp mã hóa khác nhau có thể được sử dụng, chẳng hạn như mã hóa HMAC hoặc mã hóa RSA.
+- Access token phải có thời gian hết hạn ngắn: Access token nên có thời gian hết hạn ngắn để giảm thiểu rủi ro bị kẻ tấn công đánh cắp. Thông thường, thời gian hết hạn của access token là 15 phút hoặc ít hơn.
+- Refresh token phải được lưu trữ an toàn: Refresh token nên được lưu trữ an toàn để kẻ tấn công không thể truy cập được. Refresh token có thể được lưu trữ trong cookie, session hoặc cơ sở dữ liệu.
+- Access token và refresh token phải được sử dụng đúng cách: Access token và refresh token phải được sử dụng đúng cách để giảm thiểu rủi ro bị kẻ tấn công khai thác. Ví dụ, access token không nên được lưu trữ trong mã nguồn hoặc được gửi qua HTTP không an toàn.
+  
+Dưới đây là một số mẹo cụ thể để đảm bảo bảo mật của access token và refresh token:
+
+- Sử dụng phương pháp mã hóa mạnh: Phương pháp mã hóa sử dụng để mã hóa access token phải đủ mạnh để ngăn chặn kẻ tấn công bẻ khóa.
+- Giới hạn thời gian hết hạn của access token: Thời gian hết hạn của access token nên ngắn để giảm thiểu rủi ro bị kẻ tấn công đánh cắp.
+- Sử dụng cookie httpOnly cho refresh token: Cookie httpOnly chỉ có thể được truy cập bởi trình duyệt web, giúp ngăn chặn kẻ tấn công truy cập refresh token từ phía máy chủ.
+- Sử dụng cơ chế xác thực hai yếu tố (2FA) cho refresh token: 2FA thêm một lớp bảo mật bổ sung bằng cách yêu cầu người dùng nhập mã xác thực từ thiết bị thứ hai.
